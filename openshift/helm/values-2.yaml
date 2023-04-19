@@ -1,0 +1,57 @@
+global:
+  image: registry.connect.redhat.com/hashicorp/consul-enterprise:1.15.2-ent-ubi
+  imageK8S: registry.connect.redhat.com/hashicorp/consul-k8s-control-plane:1.1.1-ubi
+  imageConsulDataplane: registry.connect.redhat.com/hashicorp/consul-dataplane:1.1.0-ubi
+  enableConsulNamespaces: true
+  openshift:
+    enabled: true
+  enterpriseLicense:
+    secretName: "consul-ent-license"
+    secretKey: "key"
+    enableLicenseAutoload: true
+  tls:
+    enabled: true
+    enableAutoEncrypt: true
+    verify: true
+    httpsOnly: true
+  gossipEncryption:
+    autoGenerate: true
+  acls:
+    manageSystemACLs: true
+    createReplicationToken: true
+server:
+  replicas: 3
+  bootstrapExpect: 3
+  connect: true
+  extraConfig: |
+    {
+      "log_level": "TRACE"
+    }
+  disruptionBudget:
+    enabled: true
+    maxUnavailable: 0
+connectInject:
+  transparentProxy:
+    defaultEnabled: true
+  enabled: true
+  default: true
+  consulNamespaces:
+    mirroringK8S: true
+  cni:
+    enabled: true
+    logLevel: info
+    multus: true
+    cniBinDir: /var/lib/cni/bin
+    cniNetDir: /etc/kubernetes/cni/net.d
+meshGateway:
+  enabled: true
+  replicas: 3
+controller:
+  enabled: true
+terminatingGateways:
+  enabled: true
+ui:
+  enabled: true
+  service:
+    enabled: true
+    type: LoadBalancer
