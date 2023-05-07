@@ -1,0 +1,10 @@
+apiVersion: consul.hashicorp.com/v1alpha1
+kind: PeeringAcceptor
+metadata:
+  name: noroh-demo
+spec:
+  peer:
+    secret:
+      name: "peering-token-noroh-demo"
+      key: "data"
+      backend: "kubernetes"
